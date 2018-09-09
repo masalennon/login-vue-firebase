@@ -21,6 +21,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+
     /*
     ** Run ESLint on save
     */
@@ -34,6 +35,9 @@ module.exports = {
         })
       }
     }
-  }
+  },
+  modules: [
+    // ['@nuxtjs/pwa', { icon: false }]
+  ],
 }
 
