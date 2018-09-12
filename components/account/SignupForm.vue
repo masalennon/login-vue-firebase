@@ -2,6 +2,13 @@
   <div>
     <form v-on:submit.prevent="signup">
       <div class="form-group">
+        <label>Name</label>
+        <div class="control">
+          <input class="form-control" type="name" placeholder="name" v-model="displayName">
+        </div>
+        <p class="help is-danger" v-if="invalidEmail">This email is invalid</p>
+      </div>
+      <div class="form-group">
         <label>Email</label>
         <div class="control">
           <input class="form-control" v-bind:class="{ 'is-danger': invalidEmail }" type="email" placeholder="New Account Email" v-model="email">
@@ -49,7 +56,6 @@
 
 <script>
   import GoogleButton from '~/components/account/3rd-party/GoogleButton.vue'
-  import firebase from '@/plugins/firebase'
 
   export default {
     name: 'SignupForm',
@@ -58,6 +64,7 @@
     },
     data () {
       return {
+        displayName: '',
         email: '',
         password: '',
         formError: ''
@@ -75,6 +82,7 @@
       signup () {
         this.formError = ''
         this.$store.dispatch('userCreate', {
+          displayName: this.displayName,
           email: this.email,
           password: this.password
         })

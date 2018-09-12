@@ -39,7 +39,6 @@
 <script>
   import GoogleButton from '~/components/account/3rd-party/GoogleButton.vue'
 
-  import firebase from '@/plugins/firebase'
   export default {
     name: 'LoginForm',
     components: {

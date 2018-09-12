@@ -2,19 +2,20 @@ import Vuex from 'vuex'
 import firebase from 'firebase'
 import { firebaseMutations, firebaseAction } from 'vuexfire'
 
-function createNewAccount (user) {
-  return firebase.database().ref(`accounts/${user.uid}`).set({
-    displayName: user.displayName || user.email.split('@')[0], // use part of the email as a username
-    email: user.email,
-    image: user.newImage || '/images/default-profile.png' // supply a default profile image for all users
+function createNewAccount (account) {
+  return firebase.database().ref(`accounts/${account.uid}`).set({
+    // displayName: account.displayName,
+    displayName: account.displayName || account.email.split('@')[0], // use part of the email as a username
+    email: account.email,
+    image: account.newImage || '/images/default-profile.png' // supply a default profile image for all users
   })
 }
 
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      user: null,
-      account: null
+      user: {},
+      account: {}
     },
     getters: {
       isAuthenticated (state) {
@@ -32,11 +33,16 @@ const createStore = () => {
   },
   userCreate ({ state }, account) {
     return firebase.auth()
-      .createUserWithEmailAndPassword(account.email, account.password)
-      .then((user) => {
-      return createNewAccount(user)
-    })
-  },
+      .createUserWithEmailAndPassword(account.email, account.password).then((result) => {
+        console.log(result.user.uid)
+        createNewAccount(
+          result.user
+      )
+      // .then((user, result) => {
+      // createNewAccount(user)
+      //   commit('setUser', result.user)
+    // })
+  })},
   userGoogleLogin ({ commit }) {
     firebase.auth().useDeviceLanguage()
     const provider = new firebase.auth.GoogleAuthProvider()
@@ -46,11 +52,12 @@ const createStore = () => {
     })
     return firebase.auth()
       .signInWithPopup(provider)
-      .then((result) => {
-      createNewAccount({
-                         newImage: result.additionalUserInfo.profile.picture, // just use their existing user image to start
-  ...result.user
-  })
+      .then((result) =>
+      {
+      // createNewAccount({
+      //                    newImage: result.additionalUserInfo.profile.picture, // just use their existing user image to start
+  // ...result.user
+  // })
     return commit('setUser', result.user)
   }).catch((error) => {
       console.log(error)

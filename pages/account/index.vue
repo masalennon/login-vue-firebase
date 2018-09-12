@@ -23,6 +23,7 @@
           <p>Information pulled from the firebase <code>/account</code> dataset</p>
           <pre v-text="`${JSON.stringify(account, null, 2)}`"></pre>
         </div>
+        <div v-else> account data is not coming.</div>
       </div>
       <div class="mt-4 one-half column centered">
         <button type="button" class="btn btn-primary mr-2" v-on:click="toggleEditForm">
@@ -39,7 +40,6 @@
   import { mapState } from 'vuex'
   import EditAccountForm from '~/components/account/EditAccountForm.vue'
 
-  import firebase from '@/plugins/firebase'
   export default {
     // middleware: 'authenticated', // checking if auth'd with firebase kinda sucks as the middleware is triggered before firebase is ready
     components: {
