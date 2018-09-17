@@ -12,7 +12,7 @@
     },
     methods: {
       GoogleButton () {
-        this.$store.dispatch('userGoogleLogin')
+        this.$store.dispatch('userGoogleSignup')
       }
     }
   }

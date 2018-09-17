@@ -1,35 +1,56 @@
 <template>
   <section class="container">
     <div>
-      <app-logo/>
-      <h1 class="title">
-        beauty
-      </h1>
-      <h2 class="subtitle">
-        Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
+      <!--{{ this.currentUser.displayName }}-->
+      <div v-if="this.user.displayName">
+        {{ this.user.displayName }}
+        {{ this.user }}
+        <nuxt-link to="/post">投稿する</nuxt-link>
       </div>
+      <div v-else>
+        <ul>
+        <li><nuxt-link to="/login">ログインする</nuxt-link></li>
+        <li><nuxt-link to="/signup">新規登録する</nuxt-link></li>
+        </ul>
+      </div>
+      
     </div>
   </section>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
+import { mapState } from "vuex";
+import firebase from "firebase";
+import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    AppLogo
-  }
-}
+  computed: {
+    ...mapState(["user"]),
+    ...mapGetters(["currentUser"])
+  },
+  data() {
+    return {
+      newData: {
+        displayName: "",
+        image: ""
+      },
+      debounceTimer: setTimeout(() => {}),
+      formError: "",
+      formSuccess: "",
+    };
+  },
+  mounted() {
+    this.newData.displayName = this.user.displayName;
+    this.newData.image = this.user.image;
+    console.log(this.newData.displayName);
+    console.log(this.currentUser.displayName);
+    console.log(this.user.displayName);
+    console.log();
+    console.log();
+  },
+  components: {},
+  method: {}
+};
 </script>
 
 <style>
@@ -42,7 +63,8 @@ export default {
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
   display: block;
   font-weight: 300;
   font-size: 100px;

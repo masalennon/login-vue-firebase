@@ -25,14 +25,13 @@
 
   export default {
     computed: mapState([
-      'user',
-      'account'
+      'user'
     ]),
     data () {
       return {
         newData: {
           displayName: '',
-          image: ''
+          image: '',
         },
         debounceTimer: setTimeout(() => {}),
         formError: '',
@@ -40,8 +39,8 @@
       }
     },
     mounted () {
-      this.newData.displayName = this.account.displayName
-      this.newData.image = this.account.image
+      this.newData.displayName = this.user.displayName
+      this.newData.image = this.user.image
     },
     methods: {
       resetFormMessages () {

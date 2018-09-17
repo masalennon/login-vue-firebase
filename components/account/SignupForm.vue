@@ -32,7 +32,7 @@
       </div>
 
       <div class="form-group">
-        <p><nuxt-link to="/account/login">I already have an account</nuxt-link></p>
+        <p><nuxt-link to="/login">I already have an account</nuxt-link></p>
       </div>
 
       <div class="form-group">

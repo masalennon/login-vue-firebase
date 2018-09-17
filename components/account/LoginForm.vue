@@ -18,7 +18,7 @@
       </div>
 
       <div class="form-group">
-        <p><nuxt-link to="/account/signup">I don't have an account</nuxt-link></p>
+        <p><nuxt-link to="/signup">I don't have an account</nuxt-link></p>
       </div>
 
       <div class="form-group">
@@ -30,7 +30,8 @@
       </div>
 
       <div class="form-actions mt-2">
-        <GoogleButton label="Sign In With Google" />
+        <!-- <GoogleButton label="Sign In With Google" /> -->
+        <button type="button" class="btn" v-on:click.prevent="googleLogin">googleアカウントでログイン</button>  
       </div>
     </form>
   </div>
@@ -67,12 +68,15 @@
           password: this.password
         })
           .then(() => {
-          this.$router.push('/account')
+          this.$router.push('/')
       })
       .catch((error) => {
           console.log(error)
         this.formError = error.message
       })
+      },
+      googleLogin () {
+        this.$store.dispatch('userGoogleLogin')
       }
     }
   }
