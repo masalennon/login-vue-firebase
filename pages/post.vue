@@ -4,7 +4,7 @@
     <input v-model="star">
     <button @click="postReview">Post</button>
     <div v-if="user">
-      user is logged in!! {{ this.user.uid }}
+      user is logged in!! {{ userId }}
       {{ this.user.displayName }}
     </div>
  </div>
@@ -25,7 +25,12 @@
       user() {
         return this.$store.state.user
       },
-      ...mapGetters(['user']) // storeのGetterとマッピング
+      userId() {
+        return firebase.auth().currentUser.uid
+      },
+      ...mapGetters([
+        'user', 
+        ]) // storeのGetterとマッピング
     },
     methods: {
       postReview() {

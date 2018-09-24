@@ -2,10 +2,19 @@
   <section class="container">
     <div>
       <!--{{ this.currentUser.displayName }}-->
-      <div v-if="this.user.displayName">
-        {{ this.user.displayName }}
-        {{ this.user }}
+      c<div v-if="this.user">
+        <!-- {{ this.user.email }} -->
+    <p>
+      <pre v-text="`${JSON.stringify(user, null, 2)}`"></pre>
+    </p>
+        <!-- {{ this.user }} -->
+        <br>
+        <input class="form-control" placeholder="Display Name" v-model="this.user.displayName" v-on:input="this.user.displayName">
+        <input class="form-control" placeholder="Display Name" v-model="this.user.email" v-on:input="this.user.displayName">
+
         <nuxt-link to="/post">投稿する</nuxt-link>
+        <nuxt-link to="/account/edit">編集する</nuxt-link>
+
       </div>
       <div v-else>
         <ul>
@@ -22,32 +31,38 @@
 import { mapState } from "vuex";
 import firebase from "firebase";
 import { mapGetters } from "vuex";
+import auth from '~/plugins/auth'
 
 export default {
   computed: {
     ...mapState(["user"]),
-    ...mapGetters(["currentUser"])
+    ...mapGetters(["currentUser"]),
+    // user() {
+    //     return this.$store.state.user
+    //   },
   },
   data() {
     return {
-      newData: {
-        displayName: "",
-        image: ""
-      },
       debounceTimer: setTimeout(() => {}),
       formError: "",
       formSuccess: "",
+      userName: "",
+      userRef : firebase.database().ref('users/' + this.userId)
+
     };
   },
-  mounted() {
-    this.newData.displayName = this.user.displayName;
-    this.newData.image = this.user.image;
-    console.log(this.newData.displayName);
-    console.log(this.currentUser.displayName);
-    console.log(this.user.displayName);
-    console.log();
-    console.log();
-  },
+  async mounted () {
+      if (process.browser) {
+        let user
+        if (!this.user) user = await auth()
+        await Promise.all([
+          this.user ? Promise.resolve() : this.$store.dispatch('setUser', { user: user || null }),
+          // this.posts.length ? Promise.resolve() : this.$store.dispatch('INIT_POSTS'), //this.post.lengthがtrueならresolveして次に行くってことだな。syn
+          // this.users.length ? Promise.resolve() : this.$store.dispatch('INIT_USERS')
+        ])
+        this.isLoaded = true
+      }
+    },
   components: {},
   method: {}
 };

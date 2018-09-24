@@ -1,5 +1,11 @@
 <template>
   <div>
+     <nuxt-link to="/login">ログインする</nuxt-link>
+     <nuxt-link to="/signup">新規登録する</nuxt-link>
+     <nuxt-link to="/post">投稿する</nuxt-link>
+     <nuxt-link to="/account/edit">編集する</nuxt-link>
+
+
     <nuxt/>
   </div>
 </template>

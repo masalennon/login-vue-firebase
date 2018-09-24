@@ -6,6 +6,6 @@ export default function ({
                          }) {
   // the server can never be authed for a single account
   if (isServer && !firebase.apps.length) {
-    redirect('/account/login')
+    redirect('/login')
   }
 }

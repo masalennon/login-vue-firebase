@@ -2,7 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from '~/plugins/firebase'
 import { firebaseMutations, firebaseAction } from 'vuexfire'
-const user = firebase.auth().currentUser
+import createPersistedState from 'vuex-persistedstate';
+import * as Cookies from "js-cookie";
+
+
 const db = firebase.database()
 const usersRef = db.ref('/users')
 const postsRef = db.ref('/posts')
@@ -11,6 +14,7 @@ const provider = new firebase.auth.GoogleAuthProvider()
 Vue.use(Vuex)
 
 function createNewAccount(user) {
+  console.log(user)
   return firebase.database().ref(`users/${user.uid}`).set({
     // displayName: user.displayName,
     displayName: user.displayName || user.email.split('@')[0], // use part of the email as a username
@@ -22,11 +26,22 @@ function createNewAccount(user) {
 
 const createStore = () => {
   return new Vuex.Store({
+    plugins: [
+      createPersistedState({
+        storage: {
+          getItem: key => Cookies.get(key),
+          // Please see https://github.com/js-cookie/js-cookie#json, on how to handle JSON.
+          setItem: (key, value) => Cookies.set(key, value, { expires: 3, secure: true }),
+          removeItem: key => Cookies.remove(key)
+        }
+      })
+    ],
     state: {
       user: null,
       post: null,
       users: [],
       posts: [],
+      userName: ''
     },
     getters: {
       isAuthenticated(state) {
@@ -34,12 +49,17 @@ const createStore = () => {
       },
       currentUser: state => state.user,
       users: state => state.users,
-      user: state => state.user
+      user: state => state.user,
+      userName: state => state.userName,
+      email: state => state.user.email
     },
     actions: {
       setAccountRef: firebaseAction(({ bindFirebaseRef }, path) => {
         return bindFirebaseRef('user', firebase.database().ref(path))
       }),
+      updateUserProfile () {
+
+      },
       resetUser({
         state
       }) {
@@ -53,7 +73,7 @@ const createStore = () => {
             createNewAccount({
               ...result.user
             })
-            return commit('setUser', result.user)
+            return commit('setUser', user)
           })
       },
       userGoogleSignup({ commit }) {
@@ -90,15 +110,12 @@ const createStore = () => {
             console.log(error)
           })
       },
-      userLogin({ state }, user) {
+      userLogin({ commit }, user) {
         return firebase.auth()
           .signInWithEmailAndPassword(user.email, user.password)
-          .then((user) => {
-            createNewAccount({
-              newImage: result.additionalUserInfo.profile.picture, // just use their existing user image to start
-              ...result.user
-            })
-            return state('setUser', user)
+          .then((result) => {
+            this.isAuthenticated = true;
+            return commit('setUser', result.user)
           })
       },
       userLogout({ state }) {
@@ -128,7 +145,8 @@ const createStore = () => {
         commit('setCredential', { user })
       },
       postReview( { state }, post) {
-        db.ref(`${this.user.uid}/posts`).push ({ //setとの違いは？
+        const uid = firebase.auth().currentUser.uid
+        db.ref(`/posts/${uid}`).push ({ //setとの違いは？
           content: post.content,
           star: post.star
         })
@@ -149,14 +167,53 @@ const createStore = () => {
           star: star
         })
       }),
+      setUser: ({ commit }) => { commit('setUser') },
+      // setName: ({ commit }) => { commit('setName') },
+      updateProfile: ({ commit }) => {commit('updateProfile')}
     },
     mutations: {
       ...firebaseMutations,
-      setUser(state, user) {
+      setUser2(state, user) {
         state.user = user
         return this.dispatch('setAccountRef', `users/${user.uid}`)
-      }
+      },
+      setUser: state => { state.user = firebase.auth().currentUser; },
+      
+      updateProfile: ({state},{user}) => { 
+      // return state.user.updateUserProfile({
+      //   displayName: user.displayName
+      // })
+      var postData = {
+        displayName: user.username,
+        // body: body,
+        // title: title,
+        // starCount: 0,
+        // authorPic: picture
+      };
+      console.log(displayName)
+      console.log(user.username)
+
+      var updates = {};
+      // updates['/posts/' + newPostKey] = postData;
+      updates['/user-posts/' + state.user.uid] = postData;
+
+      return firebase.database().ref().update(updates);
+    }
+    
+
     },
+    plugins: [
+      createPersistedState({
+          storage: {
+              getItem: key => Cookies.get(key),
+              setItem: (key, value) => Cookies.set(key, value, {
+                  expires: 3,
+                  secure: false
+              }),
+              removeItem: key => Cookies.remove(key)
+          }
+      })
+    ]
   })
 }
 

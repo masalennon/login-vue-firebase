@@ -9,7 +9,7 @@ export default async function ({ store }) {
     } catch (e) {
       console.log(e)
     }
-    await store.dispatch('SET_CREDENTIAL', { user: user || null })
-    await store.dispatch('INIT_POSTS')
+    await store.dispatch('setUser', { user: user || null })
+    // await store.dispatch('INIT_POSTS')
   }
 }

@@ -26,7 +26,7 @@
                   from $store.state: {{ this.$store.state.user.displayName }}
                   uid {{ user.key }}
                   uid {{ this.user.key }}
-                  {{ currentUser.uid }}
+                  <!-- {{ currentUser.uid }} -->
         </div>
         <div v-else> user data is not coming.</div>
       </div>
@@ -39,47 +39,58 @@
         <button type="button" class="btn btn-danger" v-on:click="signOut">Sign Out</button>
       </div>
       <nuxt-link to="/">トップページへ</nuxt-link>
-{{ yourid }}
     </div>
   </div>
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import {mapState, mapActions} from 'vuex'
   import EditAccountForm from '~/components/account/EditAccountForm.vue'
   import { mapGetters } from 'vuex'
   import firebase from 'firebase'
   import auth from '~/plugins/auth'
+  import localStorage from '~/plugins/localStorage'
 
   export default {
     // middleware: 'authenticated', // checking if auth'd with firebase kinda sucks as the middleware is triggered before firebase is ready
     components: {
       EditAccountForm
     },
+    created (context) {
+      // firebase.auth().onAuthStateChanged((user) => {
+      //   if(user) {
+      //     state.user = user
+      //     context.commit('setUser')
+      //   }
+      // }) 
+    },
     computed: {
       ...mapState([
         'user'
       ]),
-      // mapState([
-      //            'user',
-      //            'account'
-      //          ]),
       ...mapGetters([
-        'currentUser'
+        'currentUser' //これがないと↓のcurrentUserがundefinedになる
       ]),
-      yourid() {
-        return firebase.auth().currentUser.uid
-      },
+      // yourName() {
+      //   var user = firebase.auth().currentUser
+      //   return firebase.database().ref(`/users/${user.uid}/displayName`)
+      // },
+
+      // yourid() {
+      //   // return firebase.auth().currentUser.uid
+      // },
       imageAlt() {
         return `Profile image for ${this.user.displayName}`
       }
     },
     data() {
       return {
-        editing: false
+        editing: false,
+
       }
     },
     methods: {
+      // ...mapActions(['setUser']),
       toggleEditForm() {
         this.editing = !this.editing
       },
@@ -91,7 +102,8 @@
           .catch((error) => {
             console.log(error)
           })
-      }
+      },
+      
     },
     async mounted () {
       if (process.browser) {
