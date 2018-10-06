@@ -20,7 +20,7 @@ function createNewAccount(user) {
     displayName: user.displayName || user.email.split('@')[0], // use part of the email as a username
     email: user.email,
     uid: user.uid,
-    image: user.newImage || '/images/default-profile.png' // supply a default profile image for all users
+    imageUrl: user.newImage || '/images/default-profile.png' // supply a default profile image for all users
   })
 }
 
@@ -54,6 +54,9 @@ const createStore = () => {
       email: state => state.user.email
     },
     actions: {
+      // createTip({commit}, payload) {
+
+      // },
       setAccountRef: firebaseAction(({ bindFirebaseRef }, path) => {
         return bindFirebaseRef('user', firebase.database().ref(path))
       }),
@@ -178,8 +181,8 @@ const createStore = () => {
         return this.dispatch('setAccountRef', `users/${user.uid}`)
       },
       setUser: state => { state.user = firebase.auth().currentUser; },
-      
-      updateProfile: ({state},{user}) => { 
+
+      updateProfile: ({state},{user}) => {
       // return state.user.updateUserProfile({
       //   displayName: user.displayName
       // })
@@ -199,7 +202,7 @@ const createStore = () => {
 
       return firebase.database().ref().update(updates);
     }
-    
+
 
     },
     plugins: [

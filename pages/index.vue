@@ -2,27 +2,14 @@
   <section class="container">
     <div>
       <!--{{ this.currentUser.displayName }}-->
-      c<div v-if="this.user">
+      <div v-if="this.user">
         <!-- {{ this.user.email }} -->
     <p>
       <pre v-text="`${JSON.stringify(user, null, 2)}`"></pre>
     </p>
         <!-- {{ this.user }} -->
         <br>
-        <input class="form-control" placeholder="Display Name" v-model="this.user.displayName" v-on:input="this.user.displayName">
-        <input class="form-control" placeholder="Display Name" v-model="this.user.email" v-on:input="this.user.displayName">
-
-        <nuxt-link to="/post">投稿する</nuxt-link>
-        <nuxt-link to="/account/edit">編集する</nuxt-link>
-
       </div>
-      <div v-else>
-        <ul>
-        <li><nuxt-link to="/login">ログインする</nuxt-link></li>
-        <li><nuxt-link to="/signup">新規登録する</nuxt-link></li>
-        </ul>
-      </div>
-      
     </div>
   </section>
 </template>

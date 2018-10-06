@@ -1,0 +1,8 @@
+{
+    "git.ignoreLimitWarning": true,
+    "files.trimTrailingWhitespace": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "editor.formatOnSaveTimeout": 0
+}

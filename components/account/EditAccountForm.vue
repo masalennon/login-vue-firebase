@@ -5,12 +5,12 @@
       <dd class="control">
         <!-- a<input class="form-control" type="email" placeholder="Display Name" v-model="this.user.displayName" v-on:input="this.user.displayName"> -->
       </dd>
-      <div v-if="this.user"> 
+      <div v-if="this.user">
         <!-- ↑これがないとcannot read null of emailとかが出る・・・。 -->
         ログインしています
         <input v-model="userName1"/>
         <button v-on:click="updateProfile" class="btn btn-primary">更新</button>
-              
+
       </div>
 
     </dl>
@@ -24,7 +24,7 @@
       <div class="flash" v-if="formSuccess.length > 0" v-text="formSuccess"></div>
       <div class="flash flash-error" v-if="formError.length > 0" v-text="formError"></div>
     </div>
-    
+
   </form>
 
 </template>
@@ -42,7 +42,7 @@ export default {
     computed: {
       // ...mapState(["user"]),
       // ...mapGetters(['currentUser'])
-   
+
       ...mapState([
         'user'
       ]),
@@ -67,7 +67,7 @@ export default {
         console.log(name)
         this.userName1 = name
         }))
-      
+
     },
    async mounted () {
       if (process.browser) {
@@ -76,12 +76,10 @@ export default {
         await Promise.all([
           this.user ? Promise.resolve() : this.$store.dispatch('setUser', { user: user || null }),
           // this.$store.dispatch('setName')
-          
+
           // this.posts.length ? Promise.resolve() : this.$store.dispatch('INIT_POSTS'), //this.post.lengthがtrueならresolveして次に行くってことだな。syn
           // this.users.length ? Promise.resolve() : this.$store.dispatch('INIT_USERS')
         ])
-
-          
         this.isLoaded = true
       }
     },

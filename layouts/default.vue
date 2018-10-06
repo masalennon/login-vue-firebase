@@ -1,18 +1,44 @@
 <template>
   <div>
-     <nuxt-link to="/login">ログインする</nuxt-link>
-     <nuxt-link to="/signup">新規登録する</nuxt-link>
-     <nuxt-link to="/post">投稿する</nuxt-link>
-     <nuxt-link to="/account/edit">編集する</nuxt-link>
-
-
+    <header>
+      <div>
+        <div v-if="!user">
+          <nuxt-link to="/login">ログインする</nuxt-link>
+        </div>
+        <div v-else>
+          <figure class="media-left">
+            <p class="image is-64x64">
+              <img :src="user.imageUrl">
+            </p>
+          </figure>
+          <nuxt-link to="/signup">新規登録する</nuxt-link>
+          <nuxt-link to="/post">投稿する</nuxt-link>
+          <nuxt-link to="/account/edit">編集する</nuxt-link>
+        </div>
+      </div>
+    </header>
     <nuxt/>
+    <footer>
+
+    </footer>
   </div>
 </template>
+<script>
+import { mapGetters, mapActions } from "vuex";
 
+export default {
+  computed: {
+    ...mapGetters(["user"])
+  },
+  methods: {
+    ...mapActions(["callAuth"])
+  }
+};
+</script>
 <style>
 html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -22,7 +48,9 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
   margin: 0;
 }

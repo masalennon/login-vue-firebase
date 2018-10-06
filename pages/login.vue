@@ -15,7 +15,7 @@
   export default {
     middleware: 'anonymous',
     components: {
-      LoginForm
+      LoginForm,
     },
     watch: {
       // firebase is sometimes slow so we need to account for

@@ -1,8 +1,9 @@
 <template>
   <div>
+
     <Edit/>
   </div>
- 
+
 </template>
 
 <script>
@@ -15,10 +16,12 @@
 
 
   export default {
-    components: { Edit },
+  components: {
+    Edit,
+  },
     data() {
       return {
-        
+
       }
     },
     computed: {
@@ -27,11 +30,11 @@
       },
       ...mapState(["user"]),
     //   ...mapGetters([
-    //     'currentUser', 
+    //     'currentUser',
     //     ]) // storeのGetterとマッピング
     },
     methods: {
-      
+
     },
   }
 </script>
