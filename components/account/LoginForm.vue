@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
           <input type="password" class="form-control" v-bind:class="{ 'is-danger': invalidPassword }" v-model="password" placeholder="Password"><br>
-          <p class="error" v-if="invalidPassword">This password is invalid</p>    
+          <p class="error" v-if="invalidPassword">This password is invalid</p>
         </div>
         <div class="forgot">
           <a href="reset.html">Forgot password?</a>
@@ -67,14 +67,15 @@ export default {
       label: "a"
     };
   },
+  middleware: "anonymous",
+
   computed: {
     invalidEmail() {
       return false; // !this.email.includes('@')
     },
     invalidPassword() {
       return false; // !this.password.length > 12
-    },
-    
+    }
   },
   methods: {
     signin() {
@@ -101,11 +102,29 @@ export default {
 
 <style scoped>
 @import "~/assets/css/bootstrap-social.css";
-body#LoginForm{ background-image:url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); background-repeat:no-repeat; background-position:center; background-size:cover; padding:10px;}
+body#LoginForm {
+  background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 10px;
+}
 
-.form-heading { color:#fff; font-size:23px;}
-.panel h2{ color:#444444; font-size:18px; margin:0 0 8px 0;}
-.panel p { color:#777777; font-size:14px; margin-bottom:30px; line-height:24px;}
+.form-heading {
+  color: #fff;
+  font-size: 23px;
+}
+.panel h2 {
+  color: #444444;
+  font-size: 18px;
+  margin: 0 0 8px 0;
+}
+.panel p {
+  color: #777777;
+  font-size: 14px;
+  margin-bottom: 30px;
+  line-height: 24px;
+}
 .login-form .form-control {
   background: #f7f7f7 none repeat scroll 0 0;
   border: 1px solid #d4d4d4;
@@ -123,15 +142,17 @@ body#LoginForm{ background-image:url("https://hdwallsource.com/img/2014/9/blur-2
 }
 
 .login-form .form-group {
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
-.login-form{ text-align:center;}
+.login-form {
+  text-align: center;
+}
 .forgot a {
   color: #777777;
   font-size: 14px;
   text-decoration: underline;
 }
-.login-form  .btn.btn-primary {
+.login-form .btn.btn-primary {
   background: #f0ad4e none repeat scroll 0 0;
   border-color: #f0ad4e;
   color: #ffffff;
@@ -142,7 +163,8 @@ body#LoginForm{ background-image:url("https://hdwallsource.com/img/2014/9/blur-2
   padding: 0;
 }
 .forgot {
-  text-align: left; margin-bottom:30px;
+  text-align: left;
+  margin-bottom: 30px;
 }
 .botto-text {
   color: #ffffff;
@@ -152,7 +174,13 @@ body#LoginForm{ background-image:url("https://hdwallsource.com/img/2014/9/blur-2
 .login-form .btn.btn-primary.reset {
   background: #ff9900 none repeat scroll 0 0;
 }
-.back { text-align: left; margin-top:10px;}
-.back a {color: #444444; font-size: 13px;text-decoration: none;}
-
+.back {
+  text-align: left;
+  margin-top: 10px;
+}
+.back a {
+  color: #444444;
+  font-size: 13px;
+  text-decoration: none;
+}
 </style>

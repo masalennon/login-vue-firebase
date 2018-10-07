@@ -1,6 +1,5 @@
 <template>
   <div>
-      {{ tipsList }}
       <!-- <div :key="tip.key" v-for="tip in tipList">{{ tip.category }}</div> -->
       <ul id="test">
           <li v-for="tip in tips" :key="tip.key">

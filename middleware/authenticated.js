@@ -1,11 +1,9 @@
-import firebase from 'firebase'
-
 export default function ({
-                           isServer,
-                           redirect
-                         }) {
-  // the server can never be authed for a single account
-  if (isServer && !firebase.apps.length) {
-    redirect('/login')
+  store,
+  redirect
+}) {
+  // ユーザーが認証されていないとき
+  if (!store.state.user) {
+    return redirect('/login')
   }
 }
