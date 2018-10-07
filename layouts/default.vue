@@ -3,6 +3,7 @@
     <header>
       <div>
         <div v-if="!user">
+          <nuxt-link to="/signup">新規登録する</nuxt-link>
           <nuxt-link to="/login">ログインする</nuxt-link>
         </div>
         <div v-else>
@@ -11,9 +12,10 @@
               <img :src="user.imageUrl">
             </p>
           </figure>
-          <nuxt-link to="/signup">新規登録する</nuxt-link>
           <nuxt-link to="/post">投稿する</nuxt-link>
           <nuxt-link to="/account/edit">編集する</nuxt-link>
+          <nuxt-link to="view">閲覧する</nuxt-link>
+
         </div>
       </div>
     </header>
