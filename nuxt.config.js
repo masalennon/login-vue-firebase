@@ -44,12 +44,12 @@ module.exports = {
       // )
     },
   },
-  plugins: ['~/plugins/firebase',
+  plugins: [
   { src: '~/plugins/localStorage.js', ssr: false },
   { src: "~plugins/mavon-editor", ssr: false }],
 
   router: {
-    middleware: ['auth', 'authenticated']
+    middleware: ['auth']
   },
   modules: [
     ['bootstrap-vue/nuxt', { css: true }],

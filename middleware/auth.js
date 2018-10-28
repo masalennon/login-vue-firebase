@@ -1,7 +1,7 @@
-import firebase from 'firebase'
+import firebaseApp from '~/firebase/app'
 function auth () {
   return new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebaseApp.auth().onAuthStateChanged((user) => {
       resolve(user || false)
     })
   })

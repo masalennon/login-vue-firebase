@@ -44,10 +44,9 @@
 </template>
 
 <script>
-  import {mapState, mapActions} from 'vuex'
+  import {mapState, mapActions, mapGetters } from 'vuex'
   import EditAccountForm from '~/components/account/EditAccountForm.vue'
-  import { mapGetters } from 'vuex'
-  import firebase from 'firebase'
+  import firebaseApp from '~/firebase/app'
   import auth from '~/plugins/auth'
   import localStorage from '~/plugins/localStorage'
 
@@ -62,7 +61,7 @@
       //     state.user = user
       //     context.commit('setUser')
       //   }
-      // }) 
+      // })
     },
     computed: {
       ...mapState([
@@ -103,7 +102,7 @@
             console.log(error)
           })
       },
-      
+
     },
     async mounted () {
       if (process.browser) {

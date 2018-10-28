@@ -1,21 +1,23 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import firebase from '~/plugins/firebase'
+import firebaseApp from '~/firebase/app'
+import firebase from 'firebase'
+
 import { firebaseMutations, firebaseAction } from 'vuexfire'
 import createPersistedState from 'vuex-persistedstate';
 import * as Cookies from "js-cookie";
 
 
-const db = firebase.database()
+const db = firebaseApp.database()
 const usersRef = db.ref('/users')
 const postsRef = db.ref('/posts')
-const provider = new firebase.auth.GoogleAuthProvider()
+const tipsRef = db.ref('/tips')
 
 Vue.use(Vuex)
 
 function createNewAccount(user) {
   console.log(user)
-  return firebase.database().ref(`users/${user.uid}`).set({
+  return firebaseApp.database().ref(`users/${user.uid}`).set({
     // displayName: user.displayName,
     displayName: user.displayName || user.email.split('@')[0], // use part of the email as a username
     email: user.email,
@@ -24,18 +26,9 @@ function createNewAccount(user) {
   })
 }
 
+
 const createStore = () => {
   return new Vuex.Store({
-    plugins: [
-      createPersistedState({
-        storage: {
-          getItem: key => Cookies.get(key),
-          // Please see https://github.com/js-cookie/js-cookie#json, on how to handle JSON.
-          setItem: (key, value) => Cookies.set(key, value, { expires: 3, secure: true }),
-          removeItem: key => Cookies.remove(key)
-        }
-      })
-    ],
     state: {
       user: null,
       post: null,
@@ -44,21 +37,34 @@ const createStore = () => {
       userName: ''
     },
     getters: {
-      isAuthenticated(state) {
-        return !!state.user
-      },
       currentUser: state => state.user,
       users: state => state.users,
       user: state => state.user,
       userName: state => state.userName,
-      email: state => state.user.email
+      // email: state => state.user.email, if no error then delete this line
+    // 1, 本体が一文である場合
+    // 本体が一文である場合、 ブロックを表す { ...
+    // }
+    // を省略できます。
+    // また、 文の戻り値がそのまま戻り値とみなされるので、 return命令も省略できます。
+      uid: state => {
+        if (state.user && state.user.uid) return state.user.uid
+        else return null
+      },
+      isAuthenticated: state => !!state.user && !!state.user.uid
     },
+
     actions: {
       // createTip({commit}, payload) {
 
       // },
+      nuxtServerInit({ commit }) {
+        if (firebaseApp.auth().currentUser) {
+          commit('setUser', firebaseApp.auth().currentUser)
+        } else console.log('this is nuxtServerInit. User is null!')
+      },
       setAccountRef: firebaseAction(({ bindFirebaseRef }, path) => {
-        return bindFirebaseRef('user', firebase.database().ref(path))
+        return bindFirebaseRef('user', firebaseApp.database().ref(path))
       }),
       updateUserProfile () {
 
@@ -68,8 +74,17 @@ const createStore = () => {
       }) {
         state.user = null
       },
+      postTip({ commit }, tip) {
+        var newPostKey = tipsRef.push().key
+        tip.key = newPostKey
+        var updates = {}
+        updates['tips/' + newPostKey] = tip
+        updates['users/' + this.state.user.uid + '/' + newPostKey] = tip
+        firebaseApp.database().ref().update(updates)
+        return commit('setUser', this.state.user)
+      },
       userCreate({ commit }, user) {
-        return firebase.auth()
+        return firebaseApp.auth()
           .createUserWithEmailAndPassword(user.email, user.password)
           .then((result) => {
             console.log(result.user.uid)
@@ -80,12 +95,13 @@ const createStore = () => {
           })
       },
       userGoogleSignup({ commit }) {
-        firebase.auth().useDeviceLanguage()
+        firebaseApp.auth().useDeviceLanguage()
+        const provider = new firebase.auth.GoogleAuthProvider()
         provider.addScope('https://www.googleapis.com/auth/plus.login')
         provider.setCustomParameters({
           'login_hint': 'user@example.com'
         })
-        return firebase.auth()
+        return firebaseApp.auth()
           .signInWithPopup(provider)
           .then((result) => {
             createNewAccount({
@@ -98,23 +114,23 @@ const createStore = () => {
             console.log(error)
           })
       },
-      userGoogleLogin({ commit }) {
-        firebase.auth().useDeviceLanguage()
+      async userGoogleLogin({ commit }) {
+        firebaseApp.auth().useDeviceLanguage()
         provider.addScope('https://www.googleapis.com/auth/plus.login')
         provider.setCustomParameters({
           'login_hint': 'user@example.com'
         })
-        return firebase.auth()
+        return firebaseApp.auth()
           .signInWithPopup(provider)
           .then((result) => {
-            this.isAuthenticated = true;
+            const token = firebaseApp.auth().currentUser.getIdToken(true)
             return commit('setUser', result.user)
           }).catch((error) => {
             console.log(error)
           })
       },
       userLogin({ commit }, user) {
-        return firebase.auth()
+        return firebaseApp.auth()
           .signInWithEmailAndPassword(user.email, user.password)
           .then((result) => {
             this.isAuthenticated = true;
@@ -122,19 +138,19 @@ const createStore = () => {
           })
       },
       userLogout({ state }) {
-        return firebase.auth()
+        return firebaseApp.auth()
           .signOut()
           .then(() => {
             this.dispatch('resetUser')
           })
       },
       userUpdate({ state }, newData) {
-        return firebase.database().ref(`users/${state.user.uid}`).update({
+        return firebaseApp.database().ref(`users/${state.user.uid}`).update({
           displayName: newData.displayName
         })
       },
       userUpdateImage({ state }, image) {
-        return firebase.database().ref(`users/${state.user.uid}`).update({
+        return firebaseApp.database().ref(`users/${state.user.uid}`).update({
           image
         })
       },
@@ -148,7 +164,7 @@ const createStore = () => {
         commit('setCredential', { user })
       },
       postReview( { state }, post) {
-        const uid = firebase.auth().currentUser.uid
+        const uid = firebaseApp.auth().currentUser.uid
         db.ref(`/posts/${uid}`).push ({ //setとの違いは？
           content: post.content,
           star: post.star
@@ -180,7 +196,7 @@ const createStore = () => {
         state.user = user
         return this.dispatch('setAccountRef', `users/${user.uid}`)
       },
-      setUser: state => { state.user = firebase.auth().currentUser; },
+      setUser: state => { state.user = firebaseApp.auth().currentUser; },
 
       updateProfile: ({state},{user}) => {
       // return state.user.updateUserProfile({
@@ -200,7 +216,7 @@ const createStore = () => {
       // updates['/posts/' + newPostKey] = postData;
       updates['/user-posts/' + state.user.uid] = postData;
 
-      return firebase.database().ref().update(updates);
+      return firebaseApp.database().ref().update(updates);
     }
 
 

@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from "vuex";
-import firebase from "firebase";
+import firebaseApp from "~/firebase/app";
 import { mapGetters } from "vuex";
 import auth from '~/plugins/auth'
 
@@ -34,7 +34,7 @@ export default {
       formError: "",
       formSuccess: "",
       userName: "",
-      userRef : firebase.database().ref('users/' + this.userId)
+      userRef : firebaseApp.database().ref('users/' + this.userId)
 
     };
   },

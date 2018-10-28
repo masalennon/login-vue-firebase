@@ -24,7 +24,7 @@
   import SignupForm from '~/components/account/SignupForm.vue'
   import { mapState } from 'vuex'
 
-  import firebase from '@/plugins/firebase'
+  import firebaseApp from '~/firebase/app'
   export default {
     middleware: 'anonymous',
     components: {

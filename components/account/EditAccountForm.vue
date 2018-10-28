@@ -31,10 +31,10 @@
 
 <script>
 import { mapState } from "vuex";
-import firebase from "firebase";
+import firebaseApp from "~/firebase/app";
 import { mapGetters } from "vuex";
 import auth from '~/plugins/auth'
-const db = firebase.database()
+const db = firebaseApp.database()
 const usersRef = db.ref('/users')
 
 export default {
@@ -86,7 +86,7 @@ export default {
     methods: {
       updateProfile () {
           console.log(this.userName)
-        firebase.database().ref("users/" + this.user.uid).update(
+        firebaseApp.database().ref("users/" + this.user.uid).update(
           {
             displayName: this.userName1,
           }
@@ -113,7 +113,7 @@ export default {
       updateProfileImage () {
         this.resetFormMessages()
         const file = this.$refs.fileInput.files[0]
-        const ref = firebase.storage().ref(`accounts/profile/${this.user.uid}`)
+        const ref = firebaseApp.storage().ref(`accounts/profile/${this.user.uid}`)
         ref.put(file).then((snapshot) => {
           return this.$store.dispatch('userUpdateImage', snapshot.downloadURL)
         })

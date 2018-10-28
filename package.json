@@ -23,6 +23,7 @@
     "firebase": "^5.4.2",
     "i": "^0.3.6",
     "js-cookie": "^2.2.0",
+    "marked": "^0.5.1",
     "mavon-editor": "https://github.com/masalennon/mavonEditor/tarball/master",
     "npm": "^6.4.1",
     "nuxt": "^1.0.0",

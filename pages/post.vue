@@ -8,6 +8,7 @@
     padding: 50px;
     margin-bottom: 50px;
   ">
+        <nuxt-link :to="{ name: 'tips', params: { userId: 123 }}">User</nuxt-link>
 
   <div class="form-group">
     <label>タイトル</label>
@@ -40,12 +41,14 @@
 </template>
 
 <script>
-import firebase from "firebase";
-import { mapGetters } from "vuex";
+import firebaseApp from "~/firebase/app";
 import VueMarkdown from "vue-markdown";
 import axios from "axios";
+import { mapState, mapActions, mapGetters } from "vuex";
+import auth from "~/plugins/auth";
 
-const db = firebase.database();
+
+const db = firebaseApp.database();
 const usersRef = db.ref("/users");
 const postsRef = db.ref("/posts");
 const tipsRef = db.ref("/tips");
@@ -100,13 +103,15 @@ export default {
   },
   components: {},
   name: "post",
+  middleware: ['auth', 'authenticated'],
   computed: {
     user() {
       return this.$store.state.user;
     },
     userId() {
-      return firebase.auth().currentUser.uid;
+      return firebaseApp.auth().currentUser.uid;
     },
+    ...mapState(["user"]),
 
     ...mapGetters(["user"]) // storeのGetterとマッピング
   },
@@ -122,7 +127,16 @@ export default {
     //     this.postList = list;
     //   }
     // });
-
+  },
+  async mounted () {
+    if (process.browser) {
+      let user;
+      if (!this.user) user = await auth();
+      await Promise.all([
+        this.user ? Promise.resolve() : this.$store.dispatch("setUser", { user: user || null })
+      ]);
+      this.isLoaded = true;
+    }
   },
   methods: {
     fetchPost() {
@@ -131,7 +145,7 @@ export default {
           const rootList = snapshot.val();
           let list = [];
           Object.keys(rootList).forEach((val, key) => {
-            // rootList[val] = val
+            rootList[val] = val;
             list.push(rootList[val]);
           });
           this.postList = list;
@@ -141,12 +155,7 @@ export default {
       console.log("a");
     },
     post() {
-      var newPostKey = tipsRef.push().key
-      this.newParentData.key = newPostKey
-      var updates = {}
-      updates['tips/' + newPostKey] = this.newParentData
-      updates['users/' + this.$store.state.user.uid + '/' + newPostKey] = this.newParentData
-      return firebase.database().ref().update(updates)
+      this.$store.dispatch("postTip", this.newParentData);
     },
     $imgAdd(pos, $file) {
       // step 1. upload image to server.

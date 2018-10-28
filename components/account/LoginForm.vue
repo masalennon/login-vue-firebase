@@ -54,6 +54,8 @@
 
 <script>
 import GoogleButton from "~/components/account/3rd-party/GoogleButton.vue";
+import { mapActions } from 'vuex';
+
 export default {
   name: "LoginForm",
   components: {
@@ -71,13 +73,16 @@ export default {
 
   computed: {
     invalidEmail() {
-      return false; // !this.email.includes('@')
+      if (!this.email.includes('@')) return true
+        return false;
     },
     invalidPassword() {
-      return false; // !this.password.length > 12
+      if (!this.password.length > 12)
+        return false;
     }
   },
   methods: {
+    ...mapActions('modules/user', [ 'login' ]),
     signin() {
       this.formError = "";
       this.$store

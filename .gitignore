@@ -11,7 +11,7 @@ npm-debug.log
 dist
 
 *.xml
-
+*.iml
 .envrc
 
 .idea/

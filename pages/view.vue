@@ -1,19 +1,17 @@
 <template>
   <div>
       <!-- <div :key="tip.key" v-for="tip in tipList">{{ tip.category }}</div> -->
-      <ul id="test">
-          <li v-for="tip in tips" :key="tip.key">
+          <div v-for="tip in tips" :key="tip.key">
               {{tip.content}}
-          </li>
-      </ul>
-    {{tips}}
+
+          </div>
+
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-
-import firebase from "@/plugins/firebase";
+import firebaseApp from "~/firebase/app";
 export default {
   data() {
     return {
@@ -28,7 +26,10 @@ export default {
         .database()
         .ref("/tips")
         .orderByKey();
-    }
+    },
+    // compiledMarkdown() {
+    //   return marked(this.tips.content, { sanitize: true });
+    // },
   },
   created() {
       this.listen()
