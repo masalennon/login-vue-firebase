@@ -12,9 +12,9 @@
               <img :src="user.imageUrl">
             </p>
           </figure>
-          <nuxt-link to="/post">投稿する</nuxt-link>
-          <nuxt-link to="/account/edit">編集する</nuxt-link>
-          <nuxt-link to="view">閲覧する</nuxt-link>
+          <nuxt-link to="/protected/post">投稿する</nuxt-link>
+          <nuxt-link to="/protected/edit">編集する</nuxt-link>
+          <nuxt-link to="/view">閲覧する</nuxt-link>
 
         </div>
       </div>

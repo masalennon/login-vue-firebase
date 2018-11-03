@@ -8,7 +8,7 @@ export default function ({
     // ユーザーが認証されていないとき
   // let user = firebase.auth().currentUser
   // store.state.user = user
-  if (!store.getters['index/isAuthenticated']) {
+  if (!store.getters['modules/user/isAuthenticated']) {
     console.log('redirect')
     return redirect('/login')
   }
