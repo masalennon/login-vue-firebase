@@ -30,7 +30,12 @@
     "nuxt-fontawesome": "^0.3.0",
     "vue-markdown": "^2.2.4",
     "vuex-persistedstate": "^2.5.4",
-    "vuexfire": "^2.3.1"
+    "vuexfire": "^2.3.1",
+    "body-parser": "^1.18.2",
+    "cookieparser": "^0.1.0",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "jwt-decode": "^2.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
