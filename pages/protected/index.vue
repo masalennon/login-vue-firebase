@@ -64,9 +64,6 @@
       // })
     },
     computed: {
-      ...mapState([
-        'user'
-      ]),
       ...mapGetters([
         'currentUser' //これがないと↓のcurrentUserがundefinedになる
       ]),

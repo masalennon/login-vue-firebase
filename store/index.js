@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebaseApp from '~/firebase/app'
 import firebase from 'firebase'
+import { getUserFromCookie, getUserFromSession } from '@/helpers'
 
 import { firebaseMutations, firebaseAction } from 'vuexfire'
 import createPersistedState from 'vuex-persistedstate';
@@ -29,36 +30,21 @@ function createNewAccount(user) {
 
 const createStore = () => {
   return new Vuex.Store({
-    state: {
-      user: null,
-      post: null,
-      users: [],
-      posts: [],
-      userName: ''
-    },
-    getters: {
-      currentUser: state => state.user,
-      users: state => state.users,
-      user: state => state.user,
-      userName: state => state.userName,
-      // email: state => state.user.email, if no error then delete this line
-    // 1, 本体が一文である場合
-    // 本体が一文である場合、 ブロックを表す { ...
-    // }
-    // を省略できます。
-    // また、 文の戻り値がそのまま戻り値とみなされるので、 return命令も省略できます。
-      uid: state => {
-        if (state.user && state.user.uid) return state.user.uid
-        else return null
-      },
-      isAuthenticated: state => !!state.user && !!state.user.uid
-    },
-
     actions: {
       // createTip({commit}, payload) {
 
       // },
-      nuxtServerInit({ commit }) {
+      async nuxtServerInit({ dispatch }, { req }) {
+        const user = getUserFromCookie(req)
+        if (user) {
+          await dispatch('modules/user/setUser', {
+            name: user.name,
+            email: user.email,
+            avatar: user.picture,
+            uid: user.user_id
+          })
+        }
+
         if (firebaseApp.auth().currentUser) {
           commit('setUser', firebaseApp.auth().currentUser)
         } else console.log('this is nuxtServerInit. User is null!')

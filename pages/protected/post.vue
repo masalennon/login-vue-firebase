@@ -113,7 +113,6 @@ export default {
     },
     ...mapState(["user"]),
 
-    ...mapGetters(["user"]) // storeのGetterとマッピング
   },
   created() {
     // tipsRef.on("value", snapshot => {

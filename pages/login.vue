@@ -23,7 +23,9 @@
               </div>
               <button v-on:click="signin" class="btn btn-primary">Login</button>
               <br>
-              <google-button/>
+              <!-- <google-button/> -->
+              <button type="button" class="btn btn-primary btn-google" @click.prevent="googleLogin">Google Login</button>
+
               <br>
               <p>You don't have an account ? You can <router-link to="/signup">create one</router-link></p>
 
@@ -41,12 +43,11 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import firebaseApp, { googleProvider } from "~/firebase/app";
-import GoogleButton from "~/components/account/3rd-party/GoogleButton.vue";
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 export default {
-  middleware: "anonymous",
+  middleware: ['handle-login-route'],
   components: {
-    GoogleButton
   },
   data() {
     return {
@@ -57,7 +58,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"]),
+    // ...mapState(["user"]),
 
     invalidEmail() {
       return false; // !this.email.includes('@')
@@ -68,30 +69,30 @@ export default {
   },
     methods: {
     ...mapActions('modules/user', [ 'login' ]),
-    signin() {
-      this.formError = "";
-      this.$store
-        .dispatch("userLogin", {
-          email: this.email,
-          password: this.password
-        })
-        .then(() => {
-          this.$router.push("/");
-        })
-        .catch(error => {
-          console.log(error);
-          this.formError = error.message;
-        });
+    signin () {
+      // this.formError = "";
+      firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password).then((firebaseUser) => {
+        return this.login(firebaseUser.uid) // return should not be necessary here I guess..
+      }).then(() => {
+        this.$router.push('/protected')
+      }).catch((error) => {
+        console.log(error.message)
+      })
+      //前はここでdispatch('login')みたいな感じで、ここではメソッド呼ぶだけだったがこのようにしたら最後どうなるのかが
+      //ここ見ただけでわかるようになるし向こうのjsファイルがごちゃごちゃしなくなるからいいな。前はindex.jsに全部書いていたけど
+      //今はもうモジュール分けているし。
     },
-    googleLogin() {
-      this.$store.dispatch("userGoogleLogin");
+    async googleLogin() {
+      const { user } = await firebaseApp.auth().signInWithPopup(googleProvider)
+      await this.login(user)
+      this.$router.push('/protected')
     }
   },
   watch: {
     // firebase is sometimes slow so we need to account for
     // the user getting authenticated late in the game...
     user(to, from) {
-      this.$router.push("/account");
+      this.$router.push("/protected");
     }
   },
   // computed: mapState(["user"])
