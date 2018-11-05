@@ -20,7 +20,6 @@ export default {
   },
   components: {},
   computed: {
-    ...mapState(["user"]),
     tipsList: () => {
       return firebase
         .database()

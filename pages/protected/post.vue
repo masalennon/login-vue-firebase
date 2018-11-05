@@ -103,15 +103,12 @@ export default {
   },
   components: {},
   name: "post",
-  middleware: ['auth', 'authenticated'],
+  middleware: ['authenticated'],
   computed: {
-    user() {
-      return this.$store.state.user;
-    },
-    userId() {
-      return firebaseApp.auth().currentUser.uid;
-    },
-    ...mapState(["user"]),
+      ...mapGetters('modules/user', [
+        'uid',
+        'user'
+      ])
 
   },
   created() {
@@ -127,16 +124,16 @@ export default {
     //   }
     // });
   },
-  async mounted () {
-    if (process.browser) {
-      let user;
-      if (!this.user) user = await auth();
-      await Promise.all([
-        this.user ? Promise.resolve() : this.$store.dispatch("setUser", { user: user || null })
-      ]);
-      this.isLoaded = true;
-    }
-  },
+  // async mounted () {
+  //   if (process.browser) {
+  //     let user;
+  //     if (!this.user) user = await auth();
+  //     await Promise.all([
+  //       this.user ? Promise.resolve() : this.$store.dispatch("setUser", { user: user || null })
+  //     ]);
+  //     this.isLoaded = true;
+  //   }
+  // },
   methods: {
     fetchPost() {
       tipsRef.on("value", snapshot => {

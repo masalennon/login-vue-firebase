@@ -26,7 +26,7 @@
 
   import firebaseApp from '~/firebase/app'
   export default {
-    middleware: 'anonymous',
+    middleware: 'authenticated',
     components: {
       SignupForm
     },

@@ -14,7 +14,7 @@
           </figure>
           <nuxt-link to="/protected/post">投稿する</nuxt-link>
           <nuxt-link to="/protected/edit">編集する</nuxt-link>
-          <nuxt-link to="/view">閲覧する</nuxt-link>
+          <nuxt-link to="/protected/">閲覧する</nuxt-link>
 
         </div>
       </div>
@@ -30,7 +30,10 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters('modules/user', [
+        'uid',
+        'user'
+      ])
   },
   methods: {
     ...mapActions(["callAuth"])

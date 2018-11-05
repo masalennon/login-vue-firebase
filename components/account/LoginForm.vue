@@ -69,7 +69,6 @@ export default {
       label: "a"
     };
   },
-  middleware: "anonymous",
 
   computed: {
     invalidEmail() {

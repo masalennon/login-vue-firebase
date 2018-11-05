@@ -46,11 +46,10 @@ export default {
       ...mapState([
         'user'
       ]),
-      ...mapGetters([
-        'currentUser', //これがないと↓のcurrentUserがundefinedになる
-        'userName',
-        'email'
-      ]),
+      ...mapGetters('modules/user', [
+        'uid',
+        'user'
+      ])
     },
     data () {
       return {

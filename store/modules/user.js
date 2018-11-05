@@ -1,6 +1,5 @@
 import firebaseApp from '~/firebase/app'
 import Cookies from 'js-cookie'
-import { defaultCipherList } from 'constants';
 
 export const state = () => ({
     uid: null,
@@ -10,19 +9,24 @@ export const state = () => ({
 export const getters = {
 
     uid: state => {
-        if (state.user && state.user.uid) return user.uid
+        if (state.user && state.user.uid) return state.user.uid
         else return null
     },
 
-    user: state => state.user,
+    // user: state => state.user,
+    user(state) {
+      return state.user
+    },
 
-    isAuthenticated: state => !!state.user && !!state.user.uid
-
+    isAuthenticated(state) {
+      return !!state.user && !!state.user.uid
+    }
 }
 
 export const actions = {
 
     async login({ dispatch, state }, user) {
+        console.log('[STORE ACTIONS] - login')
         const token = await firebaseApp.auth().currentUser.getIdToken(true)
         const userInfo = {
             name: user.displayName,
@@ -34,34 +38,35 @@ export const actions = {
         Cookies.set('access_token', token)
         await dispatch('setUSER', userInfo)
         await dispatch('saveUID', userInfo.uid)
+        console.log('[STORE ACTIONS] - in login, response:', status)
 
     },
 
     async logout({ commit, dispatch }) {
+        console.log('[STORE ACTIONS] - logout')
         await firebaseApp.auth().signOut()
 
-        Cookies.remove('access_token')
+        Cookies.remove('access_token');
         commit('setUSER', null)
         commit('saveUID', null)
     },
 
     saveUID({ commit }, uid) {
-        console.log('[STORE MUTATIONS] - saveUID:', uid)
-        state.uid = uid
+      console.log('[STORE ACTIONS] - saveUID')
+      commit('saveUID', uid)
     },
-    setUSER(state, user) {
-        console.log('[STORE MUTATIONS] - setUSER:', user)
-        state.user = user
+    setUSER({ commit }, user) {
+      commit('setUSER', user)
     }
 }
 
 export const mutations = {
     saveUID(state, uid) {
-        console.log('[STORE MUTATIONS] - saveUID:', uid)
-        state.uid = uid
+      console.log('[STORE MUTATIONS] - saveUID:', uid)
+      state.uid = uid
     },
     setUSER(state, user) {
-        console.log('[STORE MUTATIONS] - setUSER:', user)
-        state.user = user
+      console.log('[STORE MUTATIONS] - setUSER:', user)
+      state.user = user
     }
 }

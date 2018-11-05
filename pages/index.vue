@@ -15,18 +15,16 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import firebaseApp from "~/firebase/app";
-import { mapGetters } from "vuex";
 import auth from '~/plugins/auth'
 
 export default {
   computed: {
-    ...mapState(["user"]),
-    ...mapGetters(["currentUser"]),
-    // user() {
-    //     return this.$store.state.user
-    //   },
+      ...mapGetters('modules/user', [
+        'uid',
+        'user'
+      ])
   },
   data() {
     return {
