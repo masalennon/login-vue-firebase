@@ -1,4 +1,5 @@
 <template>
+   <div v-if="!loading">
 
 <body id="LoginForm">
   <div class="container">
@@ -37,7 +38,7 @@
 
 
 </body>
-
+</div>
 </template>
 
 <script>
@@ -54,9 +55,16 @@ export default {
       email: "",
       password: "",
       formError: "",
-      label: "a"
+      label: "a",
+      loading: true
+
     };
   },
+     created () {
+        this.$nextTick(function () {
+           this.loading = false
+       })
+     },
   computed: {
     // ...mapState(["user"]),
 

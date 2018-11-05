@@ -21,7 +21,7 @@ export default {
   components: {},
   computed: {
     tipsList: () => {
-      return firebase
+      return firebaseApp
         .database()
         .ref("/tips")
         .orderByKey();
