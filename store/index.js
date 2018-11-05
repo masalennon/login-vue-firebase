@@ -21,7 +21,7 @@ export const actions = {
         name: user.name,
         email: user.email,
         avatar: user.picture,
-        uid: user.uid
+        uid: user.user_id
       })
     }
   }

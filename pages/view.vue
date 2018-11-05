@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     listen() {
-      this.database = firebase.database()
+      this.database = firebaseApp.database()
       this.todosRef = this.database.ref("tips")
       this.todosRef.on("value", snapshot => {
         if (snapshot) {
