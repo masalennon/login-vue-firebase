@@ -13,7 +13,7 @@ export const actions = {
     console.log('serverinit')
     let user
     let test = 'a'
-    if (process.server) {
+    if (process.browser) {
       user = getUserFromCookie(req) //if分の中からのアクセスは可能。if文の中で宣言された場合、外からアクセスはできない。
     }
     if (user) {
