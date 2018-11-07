@@ -11,13 +11,13 @@ export const actions = {
     req
     }) {
     console.log('serverinit')
-    let user
-    let test = 'a'
-    if (process.browser) {
-      user = getUserFromCookie(req) //if分の中からのアクセスは可能。if文の中で宣言された場合、外からアクセスはできない。
+    let user = null
+    if (process.server) { //process.browserだとリロードした時にloginに戻される・。。process.serverだとnuxt generateがエラーになる。nuxt generateとは？processとは？
+      if (req !== undefined) {
+        user = getUserFromCookie(req) //if分の中からのアクセスは可能。if文の中で宣言された場合、外からアクセスはできない。
+      }
     }
     if (user) {
-
       console.log('serverinit, user hold success!!!')
       await dispatch('modules/user/setUSER', {
         name: user.name,
