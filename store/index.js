@@ -2,21 +2,18 @@ import {
   getUserFromCookie,
   getUserFromSession
 } from '@/helpers'
-import { getters } from "./modules/user.js"
 
-export default {
-  getters: getters
-}
 export const actions = {
 
   async nuxtServerInit({
     dispatch
   }, {
     req
-  }) {
+    }) {
+    console.log('serverinit')
     const user = getUserFromCookie(req)
     if (user) {
-      console.log('user is stored in cookie')
+    console.log('serverinit, user hold success!!!')
       await dispatch('modules/user/setUSER', {
         name: user.name,
         email: user.email,
