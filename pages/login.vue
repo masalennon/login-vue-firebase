@@ -60,11 +60,11 @@ export default {
 
     };
   },
-     created () {
+    created () {
         this.$nextTick(function () {
-           this.loading = false
-       })
-     },
+          this.loading = false
+        })
+    },
   computed: {
     // ...mapState(["user"]),
 

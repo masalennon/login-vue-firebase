@@ -15,11 +15,11 @@ export const getters = {
 
     // user: state => state.user,
     user(state) {
-      return state.user
+        return state.user
     },
 
     isAuthenticated(state) {
-      return !!state.user && !!state.user.uid
+        return !!state.user && !!state.user.uid
     }
 }
 
@@ -52,21 +52,21 @@ export const actions = {
     },
 
     saveUID({ commit }, uid) {
-      console.log('[STORE ACTIONS] - saveUID')
-      commit('saveUID', uid)
+        console.log('[STORE ACTIONS] - saveUID')
+        commit('saveUID', uid)
     },
     setUSER({ commit }, user) {
-      commit('setUSER', user)
+        commit('setUSER', user)
     }
 }
 
 export const mutations = {
     saveUID(state, uid) {
-      console.log('[STORE MUTATIONS] - saveUID:', uid)
-      state.uid = uid
+        console.log('[STORE MUTATIONS] - saveUID:', uid)
+        state.uid = uid
     },
     setUSER(state, user) {
-      console.log('[STORE MUTATIONS] - setUSER:', user)
-      state.user = user
+        console.log('[STORE MUTATIONS] - setUSER:', user)
+        state.user = user
     }
 }

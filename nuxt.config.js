@@ -49,7 +49,7 @@ module.exports = {
   { src: "~plugins/mavon-editor", ssr: false }],
 
   router: {
-    middleware: []
+    middleware: ['auth']
   },
   modules: [
     ['bootstrap-vue/nuxt', { css: true }],
