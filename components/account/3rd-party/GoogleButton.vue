@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
   export default {
     name: 'GoogleButton',

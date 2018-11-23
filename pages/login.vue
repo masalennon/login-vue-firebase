@@ -44,7 +44,6 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import firebaseApp, { googleProvider } from "~/firebase/app";
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 export default {
   middleware: ['handle-login-route'],
