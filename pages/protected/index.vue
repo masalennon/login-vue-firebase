@@ -13,13 +13,18 @@
         All DB Users: {{ allusers }}
       </div>
     </div>
+        <fa :icon="fas.faAddressBook"  />
+        <fa :icon="faGithub" />
+
   </section>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import firebaseApp from '~/firebase/app.js'
-
+  import { fas } from '@fortawesome/free-solid-svg-icons'
+  import { faGithub } from '@fortawesome/free-brands-svg-icons'
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   export default {
     layout: 'protected',
     data () {
@@ -31,7 +36,13 @@
       ...mapGetters('modules/user', [
         'uid',
         'user'
-      ])
+      ]),
+      fas () {
+        return fas
+      },
+      faGithub () {
+        return faGithub
+      }
     },
     mounted: function () {
       this.$nextTick(() => {

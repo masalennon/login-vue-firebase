@@ -46,16 +46,37 @@ module.exports = {
   },
   plugins: [
     { src: '~/plugins/localStorage.js', ssr: false },
+    { src: '~/plugins/fort-awesome.js', ssr: false }
   ],
 
   router: {
     middleware: ['auth']
   },
   modules: [
-    ['bootstrap-vue/nuxt', { css: true }],
-    //OR like this
+    [
+      'bootstrap-vue/nuxt', { css: true },
+      ['nuxt-fontawesome', {
+        component: 'fa',
 
+        imports: [
+          //import whole set
+          {
+            set: '@fortawesome/free-solid-svg-icons',
+            icons: ['fas']
+          },
+        ]
+      }]
+    ],
   ],
+  fontawesome: {
+    component: 'fa',
+    imports: [
+      {
+        set: '@fortawesome/free-solid-svg-icons',
+        icons: ['fas']
+      },
+    ],
+  },
   css: [
   ],
 }
