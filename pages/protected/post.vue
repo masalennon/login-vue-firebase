@@ -30,19 +30,12 @@
       <option>電子機器</option>
     </select>
   </div>
-  <div>
-    <mavon-editor ref=md @imgAdd="$imgAdd" @imgDel="$imgDel" v-model="newParentData.content" language="en" :toolbars="toolbars" style="height: 100%"></mavon-editor>
-    <!-- refとつけることによって、this.$refs.mdとすることによってアクセスすることができるようになる。 -->
-  </div>
-
-
     <button type="submit" class="btn btn-primary" v-on:click="post">Submit</button>
   </form>
 </template>
 
 <script>
 import firebaseApp from "~/firebase/app";
-import VueMarkdown from "vue-markdown";
 import axios from "axios";
 import { mapState, mapActions, mapGetters } from "vuex";
 import auth from "~/plugins/auth";
@@ -65,38 +58,6 @@ export default {
         file: "",
         star: "",
         reviewNumber: ""
-      },
-      toolbars: {
-        bold: true,
-        italic: true,
-        header: true,
-        underline: true,
-        strikethrough: true,
-        mark: true,
-        superscript: true,
-        subscript: true,
-        quote: true,
-        ol: true,
-        ul: true,
-        link: true,
-        imagelink: true,
-        code: true,
-        table: true,
-        help: true,
-        alignleft: true,
-        aligncenter: true,
-        alignright: true,
-        subfield: true,
-        preview: true,
-        // false
-        undo: false,
-        redo: false,
-        fullscreen: false,
-        readmodel: false,
-        htmlcode: false,
-        trash: false,
-        save: false,
-        navigation: false
       },
       postList: []
     };
@@ -152,24 +113,6 @@ export default {
     },
     post() {
       this.$store.dispatch("postTip", this.newParentData);
-    },
-    $imgAdd(pos, $file) {
-      // step 1. upload image to server.
-      var formdata = new FormData();
-      formdata.append("image", $file);
-      axios({
-        url: "",
-        method: "post",
-        data: formdata,
-        headers: { "Content-Type": "multipart/form-data" }
-      }).then(url => {
-        // step 2. replace url ![...](./0) -> ![...](url)
-        // $vm.$img2Url. The details at the end of this page
-        $vm.$img2Url(pos, url);
-      });
-    },
-    $imgDel(pos) {
-      delete this.img_file[pos];
     },
     async doPost() {
       await this.$store.dispatch("ADD_POST", {

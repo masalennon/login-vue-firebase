@@ -15,3 +15,5 @@ dist
 .envrc
 
 .idea/
+.DS_Store
+

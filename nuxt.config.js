@@ -45,8 +45,8 @@ module.exports = {
     },
   },
   plugins: [
-  { src: '~/plugins/localStorage.js', ssr: false },
-  { src: "~plugins/mavon-editor", ssr: false }],
+    { src: '~/plugins/localStorage.js', ssr: false },
+  ],
 
   router: {
     middleware: ['auth']
