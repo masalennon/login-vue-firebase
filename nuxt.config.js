@@ -46,7 +46,7 @@ module.exports = {
   },
   plugins: [
     { src: '~/plugins/localStorage.js', ssr: false },
-    { src: '~/plugins/fort-awesome.js', ssr: false }
+    { src: '~/plugins/fontawesome.js', ssr: false }
   ],
 
   router: {
@@ -78,6 +78,7 @@ module.exports = {
     ],
   },
   css: [
+    '@fortawesome/fontawesome-svg-core/styles.css'
   ],
 }
 

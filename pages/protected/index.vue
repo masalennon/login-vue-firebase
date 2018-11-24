@@ -7,14 +7,19 @@
       <div>
         User ID: {{ uid }}
       </div>
-      <h3>Current User: {{user.name}}</h3>
-      <img v-if="user.avatar" :src="user.avatar" alt="">
+      <!-- <h3>Current User: {{user.name}}</h3> -->
+      <!-- <img v-if="user.avatar" :src="user.avatar" alt=""> -->
       <div>
-        All DB Users: {{ allusers }}
+        <!-- All DB Users: {{ allusers }} -->
       </div>
     </div>
-        <fa :icon="fas.faAddressBook"  />
-        <fa :icon="faGithub" />
+        <!-- <font-awesome-icon :icon="faGithub" style="font-size: 40px"/> -->
+  <div>
+    <i class="fab fa-accessible-icon"/>
+  </div>
+
+    <font-awesome-icon icon="laptop" size="4x" />
+
 
   </section>
 </template>
@@ -22,9 +27,6 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import firebaseApp from '~/firebase/app.js'
-  import { fas } from '@fortawesome/free-solid-svg-icons'
-  import { faGithub } from '@fortawesome/free-brands-svg-icons'
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   export default {
     layout: 'protected',
     data () {
@@ -37,12 +39,6 @@
         'uid',
         'user'
       ]),
-      fas () {
-        return fas
-      },
-      faGithub () {
-        return faGithub
-      }
     },
     mounted: function () {
       this.$nextTick(() => {
