@@ -30,11 +30,11 @@
           </div>
 
           <div id="" class="col-md-6">
-              <a class="btn btn-twitter-inverse btn-block btn-lg">
+              <a class="btn btn-twitter-inverse btn-block btn-lg" @click.prevent="twitterLogin">
                 <font-awesome-icon v-bind:icon="{ prefix: 'fab', iconName: 'twitter' }" style="color: #FFF; font-size: 22px;"/>
                 Log in with Twitter&nbsp;&nbsp;&nbsp;&nbsp;
               </a>
-              <a class="btn btn-facebook-inverse btn-block btn-lg">
+              <a class="btn btn-facebook-inverse btn-block btn-lg" @click.prevent="facebookLogin">
                 <font-awesome-icon v-bind:icon="{ prefix: 'fab', iconName: 'facebook' }" style="color: #FFF; font-size: 22px;"/>
                 Log in with Facebook
               </a>
@@ -42,7 +42,6 @@
                 <font-awesome-icon v-bind:icon="{ prefix: 'fab', iconName: 'google' }" style="color: #FFF; font-size: 22px;"/>
                 Log in with Google&nbsp;&nbsp;&nbsp;&nbsp;
               </a>
-              <font-awesome-icon v-bind:icon="{ prefix: 'fab', iconName: 'github' }" style="color: #4267B2; font-size: 72px;"/>
             </div>
         </div>
 
@@ -55,7 +54,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import firebaseApp, { googleProvider } from "~/firebase/app";
+import firebaseApp, { googleProvider, twitterProvider, facebookProvider } from "~/firebase/app";
 
 export default {
   middleware: ['handle-login-route'],
@@ -86,7 +85,7 @@ export default {
       return false; // !this.password.length > 12
     }
   },
-    methods: {
+  methods: {
     ...mapActions('modules/user', [ 'login' ]),
     signin () {
       // this.formError = "";
@@ -103,6 +102,20 @@ export default {
     },
     async googleLogin() {
       const { user } = await firebaseApp.auth().signInWithPopup(googleProvider)
+      await this.login(user)
+      this.$router.push('/protected')
+    },
+    async facebookLogin() {
+      const { user } = await firebaseApp.auth().signInWithPopup(facebookProvider)
+      await this.login(user)
+      this.$router.push('/protected')
+    },
+    async twitterLogin() {
+      // TODO 今はemailが取得できない。するには、↓
+      // https://developer.twitter.com/en/apps/15981790　
+      // Please add a terms of service URL and privacy policy URL in "App details" to enable additional permissions.
+      // とのこと
+      const { user } = await firebaseApp.auth().signInWithPopup(twitterProvider)
       await this.login(user)
       this.$router.push('/protected')
     }

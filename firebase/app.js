@@ -10,6 +10,8 @@ const config = {
 }
 
 const googleProvider = new firebase.auth.GoogleAuthProvider()
+const facebookProvider = new firebase.auth.FacebookAuthProvider()
+const twitterProvider = new firebase.auth.TwitterAuthProvider()
 
 export default !firebase.apps.length ? firebase.initializeApp(config) : firebase.app()
-export { googleProvider }
+export { googleProvider, facebookProvider, twitterProvider }
