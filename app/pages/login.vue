@@ -9,14 +9,15 @@
           </div>
       </div>
       <hr>
+
       <div class="row">
           <div id="" class="col-md-6">
               <div class="form-group">
-                <input v-model="email" type="email" class="form-control" id="inputEmail" placeholder="Email Address">
+                <el-input v-model="email" type="email" id="inputEmail" placeholder="Email Address"/>
                 <p class="error" v-if="invalidEmail">This email is invalid</p>
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" v-bind:class="{ 'is-danger': invalidPassword }" v-model="password" placeholder="Password">
+                <el-input type="password" v-bind:class="{ 'is-danger': invalidPassword }" v-model="password" placeholder="Password"/>
                 <div class="forgot">
                 <a href="reset.html">Forgot password?</a>
               </div>
