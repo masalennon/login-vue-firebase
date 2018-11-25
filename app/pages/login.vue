@@ -7,11 +7,9 @@
           <div class="sessionsLayoutHeader">
             <div class="sessionsLayoutHeader_title text-center">ログイン</div>
           </div>
-        <hr>
-        <div style="width: 100%;"></div>
       </div>
+      <hr>
       <div class="row">
-
           <div id="" class="col-md-6">
               <div class="form-group">
                 <input v-model="email" type="email" class="form-control" id="inputEmail" placeholder="Email Address">
@@ -28,7 +26,6 @@
               <input type="submit" name="commit" value="ログイン" class="btn btn-primary btn-block btn-lg loginSessionsForm_submit" data-disable-with="Log in">
               <p>You don't have an account ? You can <router-link to="/signup">create one</router-link></p>
           </div>
-
           <div id="" class="col-md-6">
               <a class="btn btn-twitter-inverse btn-block btn-lg" @click.prevent="twitterLogin">
                 <font-awesome-icon v-bind:icon="{ prefix: 'fab', iconName: 'twitter' }" style="color: #FFF; font-size: 22px;"/>
@@ -44,10 +41,7 @@
               </a>
             </div>
         </div>
-
     </div>
-
-
 </body>
 </div>
 </template>
@@ -136,9 +130,17 @@ export default {
 .container {
     margin-right: auto;
     margin-left: auto;
-    width: 60%;
-
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 940px;
   }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 800px;
+  }
+}
 @media only screen and (max-width: 979px) {
   .container {
     width: 70%;
