@@ -1,14 +1,6 @@
 <template>
-<form style="
-    max-width: 860px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
-    border: 1px solid;
-    padding: 50px;
-    margin-bottom: 50px;
-  ">
-        <nuxt-link :to="{ name: 'tips', params: { userId: 123 }}">User</nuxt-link>
+  <no-ssr placeholder="Loading...">
+  <nuxt-link :to="{ name: 'tips', params: { userId: 123 }}">User</nuxt-link>
 
   <div class="form-group">
     <label>タイトル</label>
@@ -31,7 +23,7 @@
     </select>
   </div>
     <button type="submit" class="btn btn-primary" v-on:click="post">Submit</button>
-  </form>
+  </no-ssr>
 </template>
 
 <script>

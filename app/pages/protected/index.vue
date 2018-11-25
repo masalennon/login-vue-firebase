@@ -1,4 +1,6 @@
 <template>
+<no-ssr placeholder="Loading...">
+
   <section>
     <div>
       Protected page --- only authenticated users can see this
@@ -14,14 +16,8 @@
       </div>
     </div>
         <!-- <font-awesome-icon :icon="faGithub" style="font-size: 40px"/> -->
-  <div>
-    <i class="fab fa-accessible-icon"/>
-  </div>
-
-    <font-awesome-icon icon="laptop" size="4x" />
-
-
   </section>
+</no-ssr>
 </template>
 
 <script>
@@ -31,7 +27,8 @@
     layout: 'protected',
     data () {
       return {
-        allusers: []
+        allusers: [],
+        loading: true
       }
     },
     computed: {

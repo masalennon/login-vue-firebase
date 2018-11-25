@@ -1,17 +1,15 @@
 <template>
+<no-ssr placeholder="Loading...">
   <section class="container">
     <div>
-      <!--{{ this.currentUser.displayName }}-->
       <div v-if="this.user">
-        <!-- {{ this.user.email }} -->
     <p>
       <pre v-text="`${JSON.stringify(user, null, 2)}`"></pre>
     </p>
-        <!-- {{ this.user }} -->
-        <br>
       </div>
     </div>
   </section>
+</no-ssr>
 </template>
 
 <script>
@@ -32,22 +30,26 @@ export default {
       formError: "",
       formSuccess: "",
       userName: "",
-      userRef : firebaseApp.database().ref('users/' + this.userId)
+      userRef : firebaseApp.database().ref('users/' + this.userId),
+      loading: true
 
     };
   },
   async mounted () {
-      if (process.browser) {
-        let user
-        if (!this.user) user = await auth()
-        await Promise.all([
-          this.user ? Promise.resolve() : this.$store.dispatch('setUser', { user: user || null }),
+    this.$nextTick( () => {
+        this.loading = false
+    })
+    if (process.browser) {
+      let user
+      if (!this.user) user = await auth()
+      await Promise.all([
+        this.user ? Promise.resolve() : this.$store.dispatch('setUser', { user: user || null }),
           // this.posts.length ? Promise.resolve() : this.$store.dispatch('INIT_POSTS'), //this.post.lengthがtrueならresolveして次に行くってことだな。syn
           // this.users.length ? Promise.resolve() : this.$store.dispatch('INIT_USERS')
-        ])
-        this.isLoaded = true
-      }
-    },
+      ])
+      this.isLoaded = true
+    }
+  },
   components: {},
   method: {}
 };

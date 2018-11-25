@@ -1,6 +1,5 @@
 <template>
-<div v-if="!loading">
-
+<no-ssr placeholder="Loading...">
 <body id="">
   <div class="container">
       <div class="row">
@@ -9,7 +8,6 @@
           </div>
       </div>
       <hr>
-
       <div class="row">
           <div id="" class="col-md-6">
               <div class="form-group">
@@ -24,27 +22,27 @@
                 <p class="error" v-if="invalidPassword">This password is invalid</p>
               </div>
 
-              <input type="submit" name="commit" value="ログイン" class="btn btn-primary btn-block btn-lg loginSessionsForm_submit" data-disable-with="Log in">
+              <input type="submit" @click.prevent="twitterLogin" value="ログイン" class="btn btn-primary btn-block btn-lg loginSessionsForm_submit" data-disable-with="Log in">
               <p>You don't have an account ? You can <router-link to="/signup">create one</router-link></p>
           </div>
           <div id="" class="col-md-6">
               <a class="btn btn-twitter-inverse btn-block btn-lg" @click.prevent="twitterLogin">
                 <font-awesome-icon v-bind:icon="{ prefix: 'fab', iconName: 'twitter' }" style="color: #FFF; font-size: 22px;"/>
-                Log in with Twitter&nbsp;&nbsp;&nbsp;&nbsp;
+                Twitterでログイン&nbsp;&nbsp;&nbsp;&nbsp;
               </a>
               <a class="btn btn-facebook-inverse btn-block btn-lg" @click.prevent="facebookLogin">
                 <font-awesome-icon v-bind:icon="{ prefix: 'fab', iconName: 'facebook' }" style="color: #FFF; font-size: 22px;"/>
-                Log in with Facebook
+                Facebookでログイン
               </a>
               <a class="btn btn-google-inverse btn-block btn-lg" @click.prevent="googleLogin">
                 <font-awesome-icon v-bind:icon="{ prefix: 'fab', iconName: 'google' }" style="color: #FFF; font-size: 22px;"/>
-                Log in with Google&nbsp;&nbsp;&nbsp;&nbsp;
+                Googleでログイン&nbsp;&nbsp;&nbsp;&nbsp;
               </a>
             </div>
         </div>
     </div>
 </body>
-</div>
+</no-ssr>
 </template>
 
 <script>
@@ -61,15 +59,8 @@ export default {
       password: "",
       formError: "",
       label: "a",
-      loading: true
-
     };
   },
-    created () {
-        this.$nextTick( () => {
-          this.loading = false
-        })
-    },
   computed: {
     // ...mapState(["user"]),
 
