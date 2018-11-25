@@ -10,8 +10,8 @@
     "start": "HOST=0.0.0.0 PORT=8080 nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint",
-    "heroku-postbuild": "npm run build"
+    "precommit": "yarn run lint",
+    "heroku-postbuild": "yarn run build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
@@ -21,6 +21,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.5.0",
     "@fortawesome/free-solid-svg-icons": "^5.5.0",
     "@fortawesome/vue-fontawesome": "^0.1.2",
+    "@nuxtjs/axios": "^5.3.6",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.1.3",

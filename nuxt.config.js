@@ -8,6 +8,7 @@ module.exports = {
   */
   head: {
     title: 'beauty',
+    titleTemplate: '%s | beauty',
     meta: [
       {charset: 'utf-8'},
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},
@@ -57,28 +58,9 @@ module.exports = {
   modules: [
     [
       'bootstrap-vue/nuxt', { css: true },
-      ['nuxt-fontawesome', {
-        component: 'fa',
-
-        imports: [
-          //import whole set
-          {
-            set: '@fortawesome/free-solid-svg-icons',
-            icons: ['fas']
-          },
-        ]
-      }]
+      '@nuxtjs/axios',
     ],
   ],
-  fontawesome: {
-    component: 'fa',
-    imports: [
-      {
-        set: '@fortawesome/free-solid-svg-icons',
-        icons: ['fas']
-      },
-    ],
-  },
   css: [
     '@fortawesome/fontawesome-svg-core/styles.css'
   ],
