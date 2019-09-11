@@ -1,4 +1,4 @@
-# beauty
+# login vue firebase
 
 > Nuxt.js project
 
