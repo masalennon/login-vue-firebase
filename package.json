@@ -34,7 +34,7 @@
     "i": "^0.3.6",
     "js-cookie": "^2.2.0",
     "jwt-decode": "^2.2.0",
-    "npm": "^6.4.1",
+    "npm": "^6.13.4",
     "nuxt": "^1.0.0",
     "nuxt-fontawesome": "^0.3.0",
     "vuex-persistedstate": "^2.5.4",
